@@ -1,5 +1,6 @@
 import { type NextPage } from "next";
 import { useEffect, useState } from "react";
+import ProgressBar from "../components/ProgressBar";
 import TimeButton from "../components/TimeButton";
 import Timer from "../components/Timer";
 
@@ -27,7 +28,7 @@ const Home: NextPage = () => {
 
   return (
     <div className="flex h-screen w-full flex-col items-center justify-center gap-4 bg-neutral-800 text-neutral-50">
-      <h1 className="text-5xl font-extrabold">t3-hatchlings</h1>
+      <h1 className="text-5xl font-extrabold">hatchlings</h1>
       <h1 className="text-4xl font-extrabold">Score: {score}</h1>
       {message && <h1 className="text-4xl font-extrabold">{message}</h1>}
       {isInterrupted && (
@@ -46,6 +47,7 @@ const Home: NextPage = () => {
                 setScore(score + 1);
                 setMessage("Congrats! 🎁");
               }}
+              selectedTime={selectedTime}
             />
             <button
               className="rounded bg-red-400 px-3 py-1 text-xl font-bold"
@@ -59,13 +61,14 @@ const Home: NextPage = () => {
           </>
         ) : (
           <>
-            <h1 className="text-4xl font-extrabold">
-              00:
-              {selectedTime / 60 <= 9
-                ? `0${selectedTime / 60}`
-                : selectedTime / 60}
-              :00
-            </h1>
+            <ProgressBar
+              progress={100}
+              label={`00:${
+                selectedTime / 60 <= 9
+                  ? `0${selectedTime / 60}`
+                  : selectedTime / 60
+              }:00`}
+            />
             <button
               className="rounded bg-emerald-600 px-3 py-1 text-xl font-bold hover:bg-emerald-500"
               onClick={() => {
