@@ -1,5 +1,11 @@
-import { type NextPage } from "next";
 import { useEffect, useState } from "react";
+import type {
+  GetServerSideProps,
+  GetServerSidePropsContext,
+  NextPage,
+} from "next";
+import { signOut } from "next-auth/react";
+import { getServerAuthSession } from "../server/common/get-server-auth-session";
 import ProgressBar from "../components/ProgressBar";
 import TimeButton from "../components/TimeButton";
 import Timer from "../components/Timer";
@@ -123,8 +129,34 @@ const Home: NextPage = () => {
           />
         </div>
       </div>
+
+      <button
+        className="fixed top-2 right-2 rounded px-3 py-1.5
+                  hover:bg-red-500 hover:bg-opacity-50
+                  disabled:cursor-not-allowed disabled:opacity-20"
+        onClick={() => signOut()}
+      >
+        Logout
+      </button>
     </div>
   );
 };
 
 export default Home;
+
+export const getServerSideProps: GetServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  const session = await getServerAuthSession(context);
+  if (!session?.user) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {},
+  };
+};
