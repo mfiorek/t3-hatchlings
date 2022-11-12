@@ -12,7 +12,6 @@ import { trpc } from "../utils/trpc";
 import Navbar from "../components/Navbar";
 
 const Home: NextPage = () => {
-  const [score, setScore] = useState(0);
   const [message, setMessage] = useState("");
   const [isInterrupted, setIsInterrupted] = useState(false);
   const [selectedTime, setSelectedTime] = useState(300);
@@ -39,17 +38,8 @@ const Home: NextPage = () => {
   return (
     <div className="flex h-screen flex-col">
       <Navbar />
-      <div className="flex w-full grow flex-col items-center justify-center gap-4 bg-neutral-800 text-neutral-50">
-        <h1 className="text-5xl font-extrabold">hatchlings</h1>
-        <h1 className="text-4xl font-extrabold">Score: {score}</h1>
-        {message && <h1 className="text-4xl font-extrabold">{message}</h1>}
-        {isInterrupted && (
-          <>
-            <h1 className="text-4xl font-extrabold">You left the window 😥</h1>
-            <h1 className="text-4xl font-extrabold">The hatchling died... ☠</h1>
-          </>
-        )}
-        <div className="flex flex-col items-center gap-2">
+      <div className="flex w-full grow flex-col items-center gap-16 bg-neutral-800 py-8 text-neutral-50">
+        <div className="flex flex-col items-center gap-8">
           {expiryTimestamp ? (
             <>
               <Timer
@@ -57,7 +47,6 @@ const Home: NextPage = () => {
                 onExpire={() => {
                   const hatchlingId = Math.ceil(Math.random() * 150) + 1;
                   setExpiryTimestamp(undefined);
-                  setScore(score + 1);
                   setMessage(
                     `Congrats! Hatchling number ${hatchlingId} has been added to your colection! 🎁`
                   );
@@ -103,12 +92,12 @@ const Home: NextPage = () => {
           )}
 
           <div className="flex gap-2">
-            <TimeButton
+            {/* <TimeButton
               text="5s"
               setSelectedTime={() => setSelectedTime(5)}
               isSelected={selectedTime === 5}
               isDisabled={!!expiryTimestamp}
-            />
+            /> */}
             <TimeButton
               text="5 min"
               setSelectedTime={() => setSelectedTime(300)}
@@ -141,6 +130,15 @@ const Home: NextPage = () => {
             />
           </div>
         </div>
+        {message && (
+          <h1 className="text-center text-4xl font-extrabold">{message}</h1>
+        )}
+        {isInterrupted && (
+          <div className="text-center text-4xl font-extrabold">
+            <p>You left the window 😥</p>
+            <p>The hatchling died... ☠</p>
+          </div>
+        )}
       </div>
     </div>
   );

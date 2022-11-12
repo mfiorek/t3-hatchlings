@@ -10,7 +10,14 @@ const HatchlingsPage = () => {
   const { data, isLoading } = trpc.hatchling.getHatchlings.useQuery();
 
   if (isLoading || !data) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex flex-col">
+        <Navbar />
+        <div className="flex h-screen w-full items-center justify-center bg-neutral-800 py-8 text-neutral-50">
+          Loading...
+        </div>
+      </div>
+    );
   }
   return (
     <div className="flex flex-col">
