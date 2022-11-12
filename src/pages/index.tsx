@@ -11,18 +11,20 @@ import Timer from "../components/Timer";
 import { trpc } from "../utils/trpc";
 import Content from "../components/Content";
 import Loader from "../components/Loader";
-import pokemonArray from "../utils/pokemonArray";
 import Modal from "../components/Modal";
-import Image from "next/image";
 
 const Home: NextPage = () => {
   const [selectedTime, setSelectedTime] = useState(300);
   const [expiryTimestamp, setExpiryTimestamp] = useState<Date>();
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalTitle, setModalTitle] = useState("");
-  const [modalChildren, setModalChildren] = useState<JSX.Element>();
-  const [modalButtonLabel, setModalButtonLabel] = useState("");
+  const [modalVariant, setModalVariant] = useState<
+    | null
+    | "stopped"
+    | "leaveWindow"
+    | "successNewHatched"
+    | "successAlreadyHatched"
+  >(null);
+  const [hatchlingId, setHatchlingId] = useState<number>();
 
   const { mutate: addHatchling } =
     trpc.hatchling.addRandomHatchling.useMutation();
@@ -32,16 +34,7 @@ const Home: NextPage = () => {
       if (expiryTimestamp) {
         console.log("It was started so you loose... BOOM.", expiryTimestamp);
         setExpiryTimestamp(undefined);
-        const leftWindowContents = (
-          <div className="flex flex-col items-center">
-            <p className="text-xl">You left the window 😥</p>
-            <p className="text-xl">The hatchling died... ☠</p>
-          </div>
-        );
-        setModalChildren(leftWindowContents);
-        setModalTitle("Oh!");
-        setModalButtonLabel("I'm sorry...");
-        setIsModalOpen(true);
+        setModalVariant("leaveWindow");
       } else {
         console.log("It was not started so it is ok for you to leave.");
       }
@@ -62,59 +55,19 @@ const Home: NextPage = () => {
 
   const handleSucces = () => {
     setExpiryTimestamp(undefined);
-    const hatchlingId = Math.ceil(Math.random() * 150) + 1;
+    const hatchlingId = Math.ceil(Math.random() * 1) + 1;
+    setHatchlingId(hatchlingId);
     const isHatchedAlready = data.some(
       (hatchling) => hatchling.hatchlingId === hatchlingId.toString()
     );
     if (isHatchedAlready) {
-      const hatchedAlreadyContents = (
-        <div className="flex flex-col items-center">
-          <Image
-            src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${hatchlingId}.png`}
-            alt="Pokemon image"
-            width={"150"}
-            height={"150"}
-            style={{ imageRendering: "pixelated" }}
-            priority={true}
-          />
-
-          <p>
-            <span className="font-semibold capitalize">
-              {pokemonArray.find((pokekon) => pokekon.id === hatchlingId)?.name}
-            </span>
-            <span> is already in your colection...</span>
-          </p>
-          <p>Better luck next time!</p>
-        </div>
-      );
-      setModalChildren(hatchedAlreadyContents);
+      setModalVariant("successAlreadyHatched");
     } else {
-      const hatchedSuccessContents = (
-        <div className="flex flex-col items-center">
-          <Image
-            src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${hatchlingId}.png`}
-            alt="Pokemon image"
-            width={"150"}
-            height={"150"}
-            style={{ imageRendering: "pixelated" }}
-            priority={true}
-          />
-          <p>
-            <span className="font-semibold capitalize">
-              {pokemonArray.find((pokekon) => pokekon.id === hatchlingId)?.name}
-            </span>
-            <span> has been added to your colection! 🎁</span>
-          </p>
-        </div>
-      );
-      setModalChildren(hatchedSuccessContents);
+      setModalVariant("successNewHatched");
       addHatchling({
         hatchlingId: hatchlingId.toString(),
       });
     }
-    setModalTitle("Congrats!");
-    setModalButtonLabel("Thanks!");
-    setIsModalOpen(true);
   };
 
   return (
@@ -132,18 +85,7 @@ const Home: NextPage = () => {
                 className="rounded bg-red-400 px-3 py-1 text-xl font-bold"
                 onClick={() => {
                   setExpiryTimestamp(undefined);
-                  const stoppedContents = (
-                    <div className="flex flex-col items-center">
-                      <p className="text-xl">You stopped 😥</p>
-                      <p className="text-xl">
-                        The hatchling did not hatch yet...
-                      </p>
-                    </div>
-                  );
-                  setModalChildren(stoppedContents);
-                  setModalTitle("Oh!");
-                  setModalButtonLabel("Ok");
-                  setIsModalOpen(true);
+                  setModalVariant("stopped");
                 }}
               >
                 Stop
@@ -173,12 +115,12 @@ const Home: NextPage = () => {
           )}
 
           <div className="flex gap-2">
-            <TimeButton
+            {/* <TimeButton
               text="5s"
               setSelectedTime={() => setSelectedTime(5)}
               isSelected={selectedTime === 5}
               isDisabled={!!expiryTimestamp}
-            />
+            /> */}
             <TimeButton
               text="5 min"
               setSelectedTime={() => setSelectedTime(300)}
@@ -213,13 +155,10 @@ const Home: NextPage = () => {
         </div>
       </div>
       <Modal
-        isOpen={isModalOpen}
-        setIsOpen={setIsModalOpen}
-        title={modalTitle}
-        buttonLabel={modalButtonLabel}
-      >
-        {modalChildren}
-      </Modal>
+        variant={modalVariant}
+        setVariant={setModalVariant}
+        hatchlingId={hatchlingId}
+      />
     </Content>
   );
 };
