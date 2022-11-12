@@ -1,10 +1,8 @@
 import React from "react";
-import { signOut, useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import Link from "next/link";
 
 const Navbar = () => {
-  const { data: session } = useSession();
-
   return (
     <div className="sticky top-0 z-50 w-full bg-neutral-700 p-2 font-bold text-neutral-50">
       <div className="flex items-center justify-between">
@@ -32,7 +30,7 @@ const Navbar = () => {
             disabled:cursor-not-allowed disabled:opacity-20"
           onClick={() => signOut()}
         >
-          Logout {session?.user?.name}
+          Logout
         </button>
       </div>
     </div>

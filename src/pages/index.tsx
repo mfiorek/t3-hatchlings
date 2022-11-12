@@ -12,8 +12,10 @@ import { trpc } from "../utils/trpc";
 import Content from "../components/Content";
 import Loader from "../components/Loader";
 import Modal from "../components/Modal";
+import { useSession } from "next-auth/react";
 
 const Home: NextPage = () => {
+  const { data: session } = useSession();
   const [selectedTime, setSelectedTime] = useState(300);
   const [expiryTimestamp, setExpiryTimestamp] = useState<Date>();
 
@@ -74,6 +76,9 @@ const Home: NextPage = () => {
     <Content>
       <div className="flex w-full grow flex-col items-center justify-center gap-16 py-8">
         <div className="flex flex-col items-center gap-8">
+          <h1 className="mt-[-72px] text-center text-4xl font-extrabold">
+            Hi {session?.user?.name}!
+          </h1>
           {expiryTimestamp ? (
             <>
               <Timer
