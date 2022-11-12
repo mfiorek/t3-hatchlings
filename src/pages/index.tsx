@@ -10,6 +10,8 @@ import TimeButton from "../components/TimeButton";
 import Timer from "../components/Timer";
 import { trpc } from "../utils/trpc";
 import Content from "../components/Content";
+import Loader from "../components/Loader";
+import pokemonArray from "../utils/pokemonArray";
 
 const Home: NextPage = () => {
   const [message, setMessage] = useState("");
@@ -35,6 +37,39 @@ const Home: NextPage = () => {
     return () => window.removeEventListener("blur", onLeave);
   }, [expiryTimestamp]);
 
+  const { data, isLoading } = trpc.hatchling.getHatchlings.useQuery();
+  if (isLoading || !data) {
+    return (
+      <Content>
+        <Loader text="Loading..." />
+      </Content>
+    );
+  }
+
+  const handleSucces = () => {
+    setExpiryTimestamp(undefined);
+    const hatchlingId = Math.ceil(Math.random() * 1) + 1;
+    const isHatchedAlready = data.some(
+      (hatchling) => hatchling.hatchlingId === hatchlingId.toString()
+    );
+    if (isHatchedAlready) {
+      setMessage(
+        `${
+          pokemonArray.find((pokekon) => pokekon.id === hatchlingId)?.name
+        } is already in your colection. Better luck next time!`
+      );
+    } else {
+      setMessage(
+        `${
+          pokemonArray.find((pokekon) => pokekon.id === hatchlingId)?.name
+        } has been added to your colection! Congrats! 🎁`
+      );
+      addHatchling({
+        hatchlingId: hatchlingId.toString(),
+      });
+    }
+  };
+
   return (
     <Content>
       <div className="flex w-full grow flex-col items-center gap-16 py-8">
@@ -43,16 +78,7 @@ const Home: NextPage = () => {
             <>
               <Timer
                 expiryTimestamp={expiryTimestamp}
-                onExpire={() => {
-                  const hatchlingId = Math.ceil(Math.random() * 150) + 1;
-                  setExpiryTimestamp(undefined);
-                  setMessage(
-                    `Congrats! Hatchling number ${hatchlingId} has been added to your colection! 🎁`
-                  );
-                  addHatchling({
-                    hatchlingId: hatchlingId.toString(),
-                  });
-                }}
+                onExpire={handleSucces}
                 selectedTime={selectedTime}
               />
               <button
@@ -130,7 +156,9 @@ const Home: NextPage = () => {
           </div>
         </div>
         {message && (
-          <h1 className="text-center text-4xl font-extrabold">{message}</h1>
+          <h1 className="text-center text-4xl font-extrabold capitalize">
+            {message}
+          </h1>
         )}
         {isInterrupted && (
           <div className="text-center text-4xl font-extrabold">

@@ -4,7 +4,6 @@ import { getServerAuthSession } from "../server/common/get-server-auth-session";
 import { trpc } from "../utils/trpc";
 import Image from "next/image";
 import pokemonArray from "../utils/pokemonArray";
-import Navbar from "../components/Navbar";
 import Content from "../components/Content";
 import Loader from "../components/Loader";
 
@@ -13,12 +12,9 @@ const HatchlingsPage = () => {
 
   if (isLoading || !data) {
     return (
-      <div className="flex flex-col">
-        <Navbar />
-        <div className="flex h-screen w-full items-center justify-center bg-neutral-800 py-8 text-neutral-50">
-          <Loader text="Loading..." />
-        </div>
-      </div>
+      <Content>
+        <Loader text="Loading..." />
+      </Content>
     );
   }
   return (
