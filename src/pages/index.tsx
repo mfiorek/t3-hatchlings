@@ -146,6 +146,12 @@ const Home: NextPage = () => {
               isDisabled={!!expiryTimestamp}
             />
             <TimeButton
+              text="25 min"
+              setSelectedTime={() => setSelectedTime(1500)}
+              isSelected={selectedTime === 1500}
+              isDisabled={!!expiryTimestamp}
+            />
+            <TimeButton
               text="30 min"
               setSelectedTime={() => setSelectedTime(1800)}
               isSelected={selectedTime === 1800}
