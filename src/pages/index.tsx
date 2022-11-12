@@ -87,7 +87,7 @@ const Home: NextPage = () => {
                 selectedTime={selectedTime}
               />
               <button
-                className="rounded bg-red-400 px-3 py-1 text-xl font-bold"
+                className="min-w-[10rem] rounded bg-red-500 px-3 py-1 text-3xl font-bold hover:bg-red-400"
                 onClick={() => {
                   setExpiryTimestamp(undefined);
                   setModalVariant("stopped");
@@ -107,7 +107,7 @@ const Home: NextPage = () => {
                 }:00`}
               />
               <button
-                className="rounded bg-emerald-600 px-3 py-1 text-xl font-bold hover:bg-emerald-500"
+                className="min-w-[10rem] rounded bg-lime-600 px-3 py-1 text-3xl font-bold hover:bg-lime-500"
                 onClick={() => {
                   const time = new Date();
                   time.setSeconds(time.getSeconds() + selectedTime);
