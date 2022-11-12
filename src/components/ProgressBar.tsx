@@ -22,8 +22,13 @@ const ProgressBar: React.FC<ProgressBarProps> = (props) => {
   const center = size / 2;
   const radius =
     center - (trackWidth > indicatorWidth ? trackWidth : indicatorWidth);
-  const dashArray = (2 * Math.PI * radius * 2) / 3;
-  const dashOffset = (dashArray * ((100 - progress) / 100) * 2) / 3;
+  const oneThird = 2 * Math.PI * radius * (1 / 3);
+  const twoThirds = 2 * Math.PI * radius * (2 / 3);
+  const progressDone = (100 - progress) / 100;
+  const backgroundDashArray = `${twoThirds} ${oneThird}`;
+  const progresDashArray = `${twoThirds - twoThirds * progressDone} ${
+    oneThird + twoThirds * progressDone
+  }`;
 
   return (
     <>
@@ -35,7 +40,7 @@ const ProgressBar: React.FC<ProgressBarProps> = (props) => {
             cy={center}
             r={radius}
             strokeWidth={trackWidth}
-            strokeDasharray={dashArray}
+            strokeDasharray={backgroundDashArray}
             strokeLinecap={indicatorCap}
           />
           <circle
@@ -44,8 +49,7 @@ const ProgressBar: React.FC<ProgressBarProps> = (props) => {
             cy={center}
             r={radius}
             strokeWidth={indicatorWidth}
-            strokeDasharray={dashArray}
-            strokeDashoffset={dashOffset}
+            strokeDasharray={progresDashArray}
             strokeLinecap={indicatorCap}
           />
         </svg>
