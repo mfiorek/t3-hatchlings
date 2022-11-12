@@ -2,17 +2,27 @@ import React, { useState } from "react";
 import type { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { getServerAuthSession } from "../server/common/get-server-auth-session";
 import { signIn } from "next-auth/react";
+import Image from "next/image";
+import PokedoroHead from "../components/PokedoroHead";
 
 const LoginPage = () => {
   const [isDisabled, setIsDisabled] = useState(false);
 
   return (
     <>
+      <PokedoroHead />
       <div className="flex min-h-screen w-full flex-col items-center justify-center gap-8 bg-neutral-800 text-neutral-50 lg:flex-row lg:gap-16">
         <section className="flex flex-col items-center">
-          {/* <Image src='/fiorecipes-logo.svg' alt='logo' className='' width={180} height={180} /> */}
+          <Image
+            src="/Egg.webp"
+            alt="Pokemon egg image"
+            width={"100"}
+            height={"100"}
+            style={{ imageRendering: "pixelated" }}
+            priority={true}
+          />
           <h1 className="text-4xl font-bold">Login to</h1>
-          <h1 className="text-5xl font-extrabold">Pokedoto</h1>
+          <h1 className="text-5xl font-extrabold">Pokedoro</h1>
         </section>
         <section className="flex w-96 flex-col items-center gap-4 rounded-2xl bg-stone-700 p-6 font-medium shadow-2xl">
           <p className="text-2xl">
