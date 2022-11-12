@@ -9,7 +9,7 @@ import ProgressBar from "../components/ProgressBar";
 import TimeButton from "../components/TimeButton";
 import Timer from "../components/Timer";
 import { trpc } from "../utils/trpc";
-import Navbar from "../components/Navbar";
+import Content from "../components/Content";
 
 const Home: NextPage = () => {
   const [message, setMessage] = useState("");
@@ -36,9 +36,8 @@ const Home: NextPage = () => {
   }, [expiryTimestamp]);
 
   return (
-    <div className="flex h-screen flex-col">
-      <Navbar />
-      <div className="flex w-full grow flex-col items-center gap-16 bg-neutral-800 py-8 text-neutral-50">
+    <Content>
+      <div className="flex w-full grow flex-col items-center gap-16 py-8">
         <div className="flex flex-col items-center gap-8">
           {expiryTimestamp ? (
             <>
@@ -140,7 +139,7 @@ const Home: NextPage = () => {
           </div>
         )}
       </div>
-    </div>
+    </Content>
   );
 };
 

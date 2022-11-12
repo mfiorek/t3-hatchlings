@@ -5,6 +5,7 @@ import { trpc } from "../utils/trpc";
 import Image from "next/image";
 import pokemonArray from "../utils/pokemonArray";
 import Navbar from "../components/Navbar";
+import Content from "../components/Content";
 
 const HatchlingsPage = () => {
   const { data, isLoading } = trpc.hatchling.getHatchlings.useQuery();
@@ -20,9 +21,8 @@ const HatchlingsPage = () => {
     );
   }
   return (
-    <div className="flex flex-col">
-      <Navbar />
-      <div className="grid h-full w-full grid-cols-2 items-center justify-center gap-2 bg-neutral-800 py-8 text-neutral-50 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
+    <Content>
+      <div className="grid h-full w-full grid-cols-2 items-center justify-center gap-2 py-8 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
         {pokemonArray.map((pokemon) => (
           <div key={pokemon.id} className="flex items-center justify-center">
             {data.some(
@@ -63,7 +63,7 @@ const HatchlingsPage = () => {
           </div>
         ))}
       </div>
-    </div>
+    </Content>
   );
 };
 
