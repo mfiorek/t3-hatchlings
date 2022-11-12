@@ -18,12 +18,12 @@ const Navbar = () => {
             Home
           </Link>
           <Link
-            href="/hatchlings"
+            href="/collection"
             className="rounded px-3 py-1.5
             hover:bg-neutral-400 hover:bg-opacity-50
             disabled:cursor-not-allowed disabled:opacity-20"
           >
-            Hatchlings
+            Collection
           </Link>
         </nav>
         <button

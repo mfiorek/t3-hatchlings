@@ -59,7 +59,7 @@ const Modal: React.FC<ModalProps> = ({ variant, setVariant, hatchlingId }) => {
       return (
         <div className="flex flex-col items-center">
           <p className="text-xl">You left the window 😥</p>
-          <p className="text-xl">The hatchling died... ☠</p>
+          <p className="text-xl">The Pokemon did not hatch...</p>
         </div>
       );
     }

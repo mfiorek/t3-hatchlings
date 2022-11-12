@@ -7,7 +7,7 @@ import pokemonArray from "../utils/pokemonArray";
 import Content from "../components/Content";
 import Loader from "../components/Loader";
 
-const HatchlingsPage = () => {
+const CollectionPage = () => {
   const { data, isLoading } = trpc.hatchling.getHatchlings.useQuery();
 
   if (isLoading || !data) {
@@ -64,7 +64,7 @@ const HatchlingsPage = () => {
   );
 };
 
-export default HatchlingsPage;
+export default CollectionPage;
 
 export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
