@@ -19,19 +19,26 @@ const CollectionPage = () => {
   }
   return (
     <Content>
-      <div className="grid h-full w-full grid-cols-2 items-center justify-center gap-2 py-8 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
+      <h1 className="px-4 pt-8 text-center text-4xl font-extrabold">
+        Your current collection of hatched pokemon
+      </h1>
+      <div className="grid h-full w-full grid-cols-2 items-center justify-center gap-8 p-8 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
         {pokemonArray.map((pokemon) => (
-          <div key={pokemon.id} className="flex items-center justify-center">
+          <div
+            key={pokemon.id}
+            className="flex h-full items-center justify-center"
+          >
             {data.some(
               (hatchling) => hatchling.hatchlingId === pokemon.id.toString()
             ) ? (
-              <div className="relative rounded-xl border bg-neutral-600">
+              <div className="relative w-full rounded-xl border bg-neutral-600">
                 <span className="absolute top-0 left-0 rounded-b-md rounded-l-none border-r border-b p-1">
                   {pokemon.id}
                 </span>
                 <Image
                   src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`}
                   alt="Pokemon image"
+                  className="w-full"
                   width={"150"}
                   height={"150"}
                   style={{ imageRendering: "pixelated" }}
@@ -42,19 +49,14 @@ const CollectionPage = () => {
                 </p>
               </div>
             ) : (
-              <div className="relative rounded-xl border bg-neutral-600 opacity-20">
+              <div className="relative h-full w-full rounded-xl border bg-neutral-600 opacity-20">
                 <span className="absolute top-0 left-0 rounded-b-md rounded-l-none border-r border-b p-1">
                   {pokemon.id}
                 </span>
-                <p
-                  className="vt323 text-center text-9xl"
-                  style={{ width: "150px", height: "150px" }}
-                >
-                  ?
-                </p>
-                <p className="pb-2 text-center font-semibold capitalize">
-                  Unknown
-                </p>
+                <div className="flex h-full flex-col">
+                  <p className="vt323 my-auto text-center text-9xl">?</p>
+                  <p className="pb-2 text-center font-semibold">Not seen yet</p>
+                </div>
               </div>
             )}
           </div>
